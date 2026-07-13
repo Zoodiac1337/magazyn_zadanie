@@ -9,7 +9,8 @@ use App\Entity\User;
 
 class TestUsersController
 {
-    #[Route('/test-users', name: 'app_test_users')]
+    // Commented out the route to prevent accidental execution. Uncomment to enable.
+    // #[Route('/test-users', name: 'app_test_users')]
     public function index(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         // regular user

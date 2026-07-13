@@ -2,22 +2,45 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
+        <title>{% block title %}Warehouse system{% endblock %}</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            nav { background-color: #333; padding: 10px; }
+            nav a { color: white; margin-right: 15px; text-decoration: none; }
+            nav a:hover { text-decoration: underline; }
+            .container { padding: 20px; }
+            .user-info { float: right; color: #ccc; font-size: 0.9em; }
+        </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
+
+        <nav>
+            {% if is_granted('ROLE_USER') %}
+                <a href="#">Home</a>
+                <a href="#">Receive Goods</a>
+                <a href="#">Issue Goods</a>
+            {% endif %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <span style="color: #ffcc00; margin-right: 10px;">| Admin Panel:</span>
+                <a href="#">Manage Warehouses</a>
+                <a href="#">Users</a>
+                <a href="#">Items</a>
+            {% endif %}
+
+            <<div class="user-info">
+                {% if app.user %}
+                    Logged in as: <strong>{{ app.user.userIdentifier }}</strong>
+                <a href="{{ path('app_logout') }}" style="color: #ff4d4d; margin-left: 10px;">Log out</a>
+            {% else %}
+                <span style="color: #aaa;">Not logged in</span>
+            {% endif %}
+</div>
+        </nav>
+
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+
     </body>
 </html>
