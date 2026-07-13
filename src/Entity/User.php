@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +33,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Warehouse>
+     */
+    #[ORM\ManyToMany(targetEntity: Warehouse::class, mappedBy: 'users')]
+    private Collection $warehouses;
+
+    /**
+     * @var Collection<int, WarehouseOperation>
+     */
+    #[ORM\OneToMany(targetEntity: WarehouseOperation::class, mappedBy: 'user')]
+    private Collection $warehouseOperations;
+
+    public function __construct()
+    {
+        $this->warehouses = new ArrayCollection();
+        $this->warehouseOperations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +125,62 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    /**
+     * @return Collection<int, Warehouse>
+     */
+    public function getWarehouses(): Collection
+    {
+        return $this->warehouses;
+    }
+
+    public function addWarehouse(Warehouse $warehouse): static
+    {
+        if (!$this->warehouses->contains($warehouse)) {
+            $this->warehouses->add($warehouse);
+            $warehouse->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouse(Warehouse $warehouse): static
+    {
+        if ($this->warehouses->removeElement($warehouse)) {
+            $warehouse->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WarehouseOperation>
+     */
+    public function getWarehouseOperations(): Collection
+    {
+        return $this->warehouseOperations;
+    }
+
+    public function addWarehouseOperation(WarehouseOperation $warehouseOperation): static
+    {
+        if (!$this->warehouseOperations->contains($warehouseOperation)) {
+            $this->warehouseOperations->add($warehouseOperation);
+            $warehouseOperation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouseOperation(WarehouseOperation $warehouseOperation): static
+    {
+        if ($this->warehouseOperations->removeElement($warehouseOperation)) {
+            // set the owning side to null (unless already changed)
+            if ($warehouseOperation->getUser() === $this) {
+                $warehouseOperation->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
