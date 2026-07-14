@@ -3,29 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Warehouse system{% endblock %}</title>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-            nav { background-color: #333; padding: 10px; }
-            nav a { color: white; margin-right: 15px; text-decoration: none; }
-            nav a:hover { text-decoration: underline; }
-            .container { padding: 20px; }
-            .user-info { float: right; color: #ccc; font-size: 0.9em; }
-        </style>
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     </head>
     <body>
 
         <nav>
             {% if is_granted('ROLE_USER') %}
-                <a href="#">Home</a>
-                <a href="#">Receive Goods</a>
-                <a href="#">Issue Goods</a>
+                <a href="{{ path('app_warehouse') }}">Home</a>
+                <a href="{{ path('app_receive_goods') }}">Receive Goods</a>
+                <a href="{{ path('app_issue_goods') }}">Issue Goods</a>
             {% endif %}
 
             {% if is_granted('ROLE_ADMIN') %}
                 <span style="color: #ffcc00; margin-right: 10px;">| Admin Panel:</span>
-                <a href="#">Manage Warehouses</a>
-                <a href="#">Users</a>
-                <a href="#">Items</a>
+                <a href="{{ path('app_manage_warehouses') }}">Manage Warehouses</a>
+                <a href="{{ path('app_manage_users') }}">Users</a>
+                <a href="{{ path('app_manage_items') }}">Items</a>
             {% endif %}
 
             <<div class="user-info">

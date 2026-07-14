@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Receive Goods{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <form class="magazyn-form" method="POST">
+        
+        <h2>Receive Goods</h2>
+        <p class="subtitle">Enter delivery details to receive items.</p>
+
+        {# Pick a warehouse #}
+        <div class="form-group">
+            <label for="warehouse">Select Warehouse:</label>
+            <select id="warehouse" class="form-control">
+                <option value="">-- Select warehouse from list --</option>
+            </select>
+        </div>
+
+        {# Pick a product #}
+        <div class="form-group">
+            <label for="product">Product:</label>
+            <select id="product" class="form-control" onchange="updateUnitPreview(this)">
+                <option value="">-- Select product from list --</option>
+            </select>
+        </div>
+
+        {# Visual preview of the unit of measure #}
+        <div class="form-group">
+            <label>Unit of measure for the product:</label>
+            <span id="unit" class="badge">Select a product...</span>
+        </div>
+
+        {# Quantity received #}
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" class="form-control" min="1" value="1">
+        </div>
+
+        {# Unit price (net) #}
+        <div class="form-group">
+            <label for="price">Unit Price (Net):</label>
+            <input type="number" id="price" class="form-control" step="0.01" placeholder="0.00">
+        </div>
+
+        {# VAT #}
+        <div class="form-group">
+            <label for="vat">VAT Rate (%):</label>
+            <input type="number" id="vat" class="form-control" min="0" step="1" placeholder="23">
+        </div>
+
+        {# Pliki #}
+        <div class="form-group">
+            <label for="files">Attach invoices (PDF/XML, max 4 files):</label>
+            <input type="file" id="files" class="form-control-file" multiple accept=".pdf,.xml">
+            <small class="form-help">Hold Ctrl/Cmd to select multiple files.</small>
+        </div>
+
+        <button type="button" class="btn-submit">Confirm Receipt</button>
+        <a href="#" class="btn-cancel">Cancel</a>
+
+    </form>
+</div>
+
+<script>
+    function updateUnitPreview(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const unit = selectedOption.getAttribute('data-unit') || 'No data available';
+        document.getElementById('unit').textContent = unit;
+    }
+</script>
+{% endblock %}

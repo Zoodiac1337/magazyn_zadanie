@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Issue Goods{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <form class="magazyn-form" method="POST">
+
+        <h2>Issue Goods</h2>
+        <p class="subtitle">Remove items from warehouse stock.</p>
+
+        {# Pick a warehouse #}
+        <div class="form-group">
+            <label for="warehouse">From Warehouse:</label>
+            <select id="warehouse" class="form-control">
+                <option value="">-- Select warehouse --</option>
+            </select>
+        </div>
+
+        {# Pick a product #}
+        <div class="form-group">
+            <label for="product">Product to Issue:</label>
+            <select id="product" class="form-control">
+                <option value="">-- Select product --</option>
+            </select>
+        </div>
+
+        {# Quantity issued #}
+        <div class="form-group">
+            <label for="quantity">Quantity Issued:</label>
+            <input type="number" id="quantity" class="form-control" min="1" value="1">
+        </div>
+
+        <button type="button" class="btn-submit btn-danger-action">Confirm Issue</button>
+        <a href="#" class="btn-cancel">Cancel</a>
+
+    </form>
+</div>
+{% endblock %}

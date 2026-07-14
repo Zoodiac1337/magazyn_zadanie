@@ -1,3 +1,155 @@
-body {
-    background-color: #FAF9F6;
+/* --- General page styles --- */
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background-color: #f4f4f4; /* Subtle background for the entire application */
+}
+.container { 
+    padding: 20px; 
+}
+
+/* --- Navigation (Menu) --- */
+nav { 
+    background-color: #333; 
+    padding: 15px; 
+    overflow: hidden; /* Prevents layout breaking due to floats */
+}
+nav a { 
+    color: white; 
+    margin-right: 15px; 
+    text-decoration: none; 
+    font-size: 0.95em;
+}
+nav a:hover { 
+    text-decoration: underline; 
+}
+.user-info { 
+    float: right; 
+    color: #ccc; 
+    font-size: 0.9em; 
+    line-height: 1.5;
+}
+
+/* --- Form container styling (box style) --- */
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.login-container h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #333;
+    text-align: center;
+    font-size: 1.5em;
+}
+.subtitle {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+/* --- Form elements --- */
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9em;
+}
+.form-group .form-control {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+.form-control-file {
+    font-size: 0.85em;
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+}
+.form-help {
+    color: #888;
+    font-size: 0.75em;
+    display: block;
+    margin-top: 3px;
+}
+
+/* --- Buttons and actions --- */
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.btn-submit:hover {
+    background-color: #555;
+}
+
+/* Specific button for goods issue (WZ) */
+.btn-danger-action {
+    background-color: #a94442;
+}
+.btn-danger-action:hover {
+    background-color: #c9302c;
+}
+
+/* Return / cancel button */
+.btn-cancel {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #e6e6e6;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+}
+.btn-cancel:hover {
+    background-color: #d4d4d4;
+}
+
+/* --- Additional elements --- */
+.badge {
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: bold;
+    display: inline-block;
+}
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
 }
