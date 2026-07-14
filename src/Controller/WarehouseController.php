@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Controller;
-
+use App\Form\ReceiveType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class WarehouseController extends AbstractController
 {
@@ -16,9 +18,25 @@ class WarehouseController extends AbstractController
     }
 
     #[Route('/receive-goods', name: 'app_receive_goods')]
-    public function receiveGoods(): Response
+    public function receiveGoods(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('receivegoods.html.twig');
+        $operation = new \App\Entity\WarehouseOperation();
+        $form = $this->createForm(ReceiveType::class, $operation);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $operation->setType('IN'); // Set the operation type to 'IN' for receiving goods
+            $operation->setUser($this->getUser()); // Set the user who performed the
+            $operation->setCreatedAt(new \DateTime()); // Timestamp of the operation
+            $entityManager->persist($operation);
+            $entityManager->flush();
+
+            // Display a success message and redirect to the warehouse page
+            $this->addFlash('success', 'Goods received successfully!');
+            return $this->redirectToRoute('app_receive_goods');
+        }
+        return $this->render('receivegoods.html.twig', [
+            'form' => $form->createView(),
+        ]);
 
     }
 
