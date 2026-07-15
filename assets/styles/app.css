@@ -214,3 +214,72 @@ nav a:hover {
     margin-bottom: 15px;
     font-size: 0.9em;
 }
+
+/* --- Dashboard --- */
+.dashboard-container {
+    max-width: 550px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.dashboard-container h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #333;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+/* Warehouse Card */
+.simple-warehouse-card {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.simple-warehouse-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+/* Stock items list */
+.stock-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stock-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 0.95em;
+}
+
+.stock-list li:last-child {
+    border-bottom: none;
+}
+
+.product-name {
+    color: #555;
+}
+
+.stock-qty {
+    color: #111;
+}
+
+.empty-stock {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 10px 0;
+}

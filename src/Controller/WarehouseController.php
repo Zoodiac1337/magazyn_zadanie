@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 use App\Form\ReceiveType;
+use App\Entity\User;
+use App\Repository\WarehouseOperationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,10 +13,31 @@ use Doctrine\ORM\EntityManagerInterface;
 class WarehouseController extends AbstractController
 {
     #[Route('/', name: 'app_warehouse')]
-    public function index(): Response
+    public function index(WarehouseOperationRepository $operationRepo): Response
     {
-        return $this->render('warehouse.html.twig');
+        // 1. Get the logged-in user
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
 
+        // 2. Fetch the warehouses assigned to this user
+        // (Assumes a ManyToMany relation: $user->getWarehouses())
+        $warehouses = $user->getWarehouses();
+
+        $dashboardData = [];
+
+        // 3. For each warehouse, get its real-time stock list
+        foreach ($warehouses as $warehouse) {
+            $dashboardData[] = [
+                'warehouse' => $warehouse,
+                'stock' => $operationRepo->getStockReportForWarehouse($warehouse)
+            ];
+        }
+
+        return $this->render('warehouse.html.twig', [
+            'data' => $dashboardData,
+        ]);
     }
 
     #[Route('/receive-goods', name: 'app_receive_goods')]
