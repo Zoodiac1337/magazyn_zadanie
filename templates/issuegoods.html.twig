@@ -4,36 +4,72 @@
 
 {% block body %}
 <div class="form-container">
-    <form class="magazyn-form" method="POST">
+    {# Render the Symfony form #}
+    {{ form_start(form, {'attr': {'class': 'magazyn-form'}}) }}
 
         <h2>Issue Goods</h2>
         <p class="subtitle">Remove items from warehouse stock.</p>
 
         {# Pick a warehouse #}
         <div class="form-group">
-            <label for="warehouse">From Warehouse:</label>
-            <select id="warehouse" class="form-control">
-                <option value="">-- Select warehouse --</option>
-            </select>
+            {{ form_label(form.warehouse, 'Select Warehouse:') }}
+            {{ form_widget(form.warehouse, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.warehouse) }}
         </div>
 
         {# Pick a product #}
         <div class="form-group">
-            <label for="product">Product to Issue:</label>
-            <select id="product" class="form-control">
-                <option value="">-- Select product --</option>
-            </select>
+            {{ form_label(form.product, 'Product:') }}
+            {{ form_widget(form.product, {'attr': {
+                'class': 'form-control',
+                'onchange': 'updateUnitPreview(this)'
+            }}) }}
+            {{ form_errors(form.product) }}
         </div>
 
         {# Quantity issued #}
         <div class="form-group">
-            <label for="quantity">Quantity Issued:</label>
-            <input type="number" id="quantity" class="form-control" min="1" value="1">
+            {{ form_label(form.quantity, 'Quantity Issued:') }}
+            <div class="input-group" id="quantity-group" data-suffix="">
+                {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            {{ form_errors(form.quantity) }}
         </div>
 
-        <button type="button" class="btn-submit btn-danger-action">Confirm Issue</button>
-        <a href="#" class="btn-cancel">Cancel</a>
+        <button type="submit" class="btn-submit btn-danger-action">Confirm Issue</button>
 
-    </form>
+        {# Close the form #}
+        {{ form_end(form) }}
+
+        {# Loop through and display any success flash messages #}
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+        
+        {# Loop through and display any error flash messages #}
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
 </div>
+<script>
+    function updateUnitPreview(selectElement) {
+        // 1. Get the selected option
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        // 2. Fetch its 'data-unit' value (fallback to empty string if none selected)
+        const unit = selectedOption.getAttribute('data-unit') || '';
+        
+        // 3. Find the quantity input group container
+        const quantityGroup = document.getElementById('quantity-group');
+        
+        // 4. Update its 'data-suffix' attribute dynamically!
+        if (quantityGroup) {
+            quantityGroup.setAttribute('data-suffix', unit);
+        }
+    }
+</script>
 {% endblock %}

@@ -4,7 +4,6 @@
 
 {% block body %}
 <div class="form-container">
-    <form class="magazyn-form" method="POST">
     {# Render the Symfony form #}
     {{ form_start(form, {'attr': {'class': 'magazyn-form'}}) }}
         
@@ -73,8 +72,6 @@
             {{ message }}
         </div>
         {% endfor %}
-        
-    </form>
 </div>
 
 <script>

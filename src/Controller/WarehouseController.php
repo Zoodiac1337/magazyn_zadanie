@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Form\ReceiveType;
+use App\Form\IssueType;
 use App\Entity\User;
 use App\Repository\WarehouseOperationRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,9 +54,8 @@ class WarehouseController extends AbstractController
             $entityManager->persist($operation);
             $entityManager->flush();
 
-            // Display a success message and redirect to the warehouse page
+            // Display a success message
             $this->addFlash('success', 'Goods received successfully!');
-            return $this->redirectToRoute('app_receive_goods');
         }
         return $this->render('receivegoods.html.twig', [
             'form' => $form->createView(),
@@ -64,9 +64,34 @@ class WarehouseController extends AbstractController
     }
 
     #[Route('/issue-goods', name: 'app_issue_goods')]
-    public function issueGoods(): Response
+    public function issueGoods(Request $request, EntityManagerInterface $entityManager, WarehouseOperationRepository $operationRepo): Response
     {
-        return $this->render('issuegoods.html.twig');
+        $operation = new \App\Entity\WarehouseOperation();
+        $form = $this->createForm(IssueType::class, $operation);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Check if the quantity to be issued is available in stock
+            $currentStock = $operationRepo->getCurrentStock($operation->getWarehouse(), $operation->getProduct());
+            // If the requested quantity exceeds the current stock, show an error message
+            if ($operation->getQuantity() > $currentStock) {
+                $this->addFlash('error', sprintf('Insufficient stock to issue the requested quantity. Available stock: %d', $currentStock));
+                return $this->render('issuegoods.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            }
+            // If the stock is sufficient, proceed to issue the goods
+            $operation->setType('OUT'); // Set the operation type to 'OUT' for issuing goods
+            $operation->setUser($this->getUser()); // Set the user who performed the
+            $operation->setCreatedAt(new \DateTime()); // Timestamp of the operation
+            $entityManager->persist($operation);
+            $entityManager->flush();
+
+            // Display a success message
+            $this->addFlash('success', 'Goods issued successfully!');
+        }
+        return $this->render('issuegoods.html.twig', [
+            'form' => $form->createView(),
+        ]);
 
     }
 

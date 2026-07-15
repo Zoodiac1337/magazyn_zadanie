@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Warehouse;
 use App\Entity\WarehouseOperation;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +36,20 @@ class WarehouseOperationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
        }
+
+       public function getCurrentStock(Warehouse $warehouse, Product $product): int
+       {
+        $result = $this->createQueryBuilder('o')
+            ->select("SUM(CASE WHEN o.type = 'IN' THEN o.quantity ELSE -o.quantity END)")
+            ->where('o.warehouse = :warehouse')
+            ->andWhere('o.product = :product')
+            ->setParameter('warehouse', $warehouse)
+            ->setParameter('product', $product)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) ($result ?? 0);
+}
 
     //    public function findOneBySomeField($value): ?WarehouseOperation
     //    {
