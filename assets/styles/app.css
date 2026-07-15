@@ -289,3 +289,37 @@ nav a:hover {
     font-style: italic;
     padding: 10px 0;
 }
+
+/* Style for expanded checkboxes */
+.checkbox-group div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    height: 18px;
+    width: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Styling for native multi-select boxes */
+select.select-multiple[multiple] {
+    height: 120px; /* Gives the box a clean, scrollable height */
+    padding: 8px;
+}
+
+select.select-multiple[multiple] option {
+    padding: 6px 10px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+}
+
+/* Give selected options a subtle highlight */
+select.select-multiple[multiple] option:checked {
+    background-color: #e2f0d9 !important; /* Soft green highlight matching your theme */
+    color: #385723 !important;
+}

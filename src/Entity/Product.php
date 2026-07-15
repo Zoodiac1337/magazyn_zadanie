@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'This product already exists in the system!')]
 class Product
 {
     #[ORM\Id]
@@ -15,7 +17,7 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
@@ -44,7 +46,7 @@ class Product
 
     public function setName(string $name): static
     {
-        $this->name = $name;
+        $this->name = ucfirst(strtolower(trim($name)));
 
         return $this;
     }
@@ -56,7 +58,7 @@ class Product
 
     public function setUnit(string $unit): static
     {
-        $this->unit = $unit;
+        $this->unit = strtolower(trim($unit));
 
         return $this;
     }

@@ -3,6 +3,48 @@
 {% block title %}Manage Users{% endblock %}
 
 {% block body %}
-    <h1>Placeholder</h1>
-    <p>To be developped.</p>
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'magazyn-form'}}) }}
+        <h2>Create User</h2>
+        <p class="subtitle">Register a warehouse worker or manager account.</p>
+
+        <div class="form-group">
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.username) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.password.first) }}
+            {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password.first) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.password.second) }}
+            {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password.second) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.warehouses) }}
+            {{ form_widget(form.warehouses, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.warehouses) }}
+        </div>
+
+        <div class="form-group checkbox-group" style="margin-top: 15px; margin-bottom: 20px;">
+            <div>
+                {{ form_widget(form.isAdmin) }}
+                {{ form_label(form.isAdmin) }}
+            </div>
+            {{ form_errors(form.isAdmin) }}
+        </div>
+
+        <button type="submit" class="btn-submit">Create User Account</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+</div>
 {% endblock %}

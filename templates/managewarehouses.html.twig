@@ -1,8 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Manage Warehouses{% endblock %}
+{% block title %}Manage Warehouse{% endblock %}
 
 {% block body %}
-    <h1>Placeholder</h1>
-    <p>To be developped.</p>
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'magazyn-form'}}) }}
+        <h2>Create Warehouse</h2>
+        <p class="subtitle">Register a new physical storage location.</p>
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.users) }}
+            {{ form_widget(form.users, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.users) }}
+        </div>
+
+        <button type="submit" class="btn-submit">Save Warehouse</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+</div>
 {% endblock %}

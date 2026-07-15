@@ -3,6 +3,28 @@
 {% block title %}Manage Items{% endblock %}
 
 {% block body %}
-    <h1>Placeholder</h1>
-    <p>To be developped.</p>
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'magazyn-form'}}) }}
+        <h2>Create Product</h2>
+        <p class="subtitle">Add a new item type to the inventory catalog.</p>
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.unit) }}
+            {{ form_widget(form.unit, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.unit) }}
+        </div>
+
+        <button type="submit" class="btn-submit">Register Product</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+</div>
 {% endblock %}
