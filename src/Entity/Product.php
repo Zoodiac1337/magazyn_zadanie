@@ -59,7 +59,6 @@ class Product
     public function setUnit(string $unit): static
     {
         $this->unit = strtolower(trim($unit));
-
         return $this;
     }
 

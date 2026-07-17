@@ -132,7 +132,6 @@ class WarehouseOperation
 
         return $this;
     }
-
     public function getInvoiceFilenames(): ?array
     {
         return $this->invoiceFilenames ??[];
