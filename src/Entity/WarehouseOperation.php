@@ -38,8 +38,8 @@ class WarehouseOperation
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $priceNetto = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $invoiceFilename = null;
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $invoiceFilenames = [];
 
     #[ORM\Column]
     private ?\DateTime $createdAt = null;
@@ -133,14 +133,14 @@ class WarehouseOperation
         return $this;
     }
 
-    public function getInvoiceFilename(): ?array
+    public function getInvoiceFilenames(): ?array
     {
-        return $this->invoiceFilename;
+        return $this->invoiceFilenames ??[];
     }
 
-    public function setInvoiceFilename(?array $invoiceFilename): static
+    public function setInvoiceFilenames(?array $invoiceFilenames): self
     {
-        $this->invoiceFilename = $invoiceFilename;
+        $this->invoiceFilenames = $invoiceFilenames;
 
         return $this;
     }

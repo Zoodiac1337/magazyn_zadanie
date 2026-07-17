@@ -18,3 +18,9 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+# Exclude all uploaded invoices
+/public/uploads/invoices/*
+
+# But do not ignore the .gitkeep file (so the folder structure remains on GitHub)
+!/public/uploads/invoices/.gitkeep

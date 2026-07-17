@@ -7,10 +7,14 @@ use App\Entity\Warehouse;
 use App\Entity\WarehouseOperation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
 
 class ReceiveType extends AbstractType
 {
@@ -45,7 +49,7 @@ class ReceiveType extends AbstractType
                 'placeholder' => '0.00',
                 'step' => '0.01',
                 'min' => '0.00',
-        ],
+                ],
             ])
             ->add('warehouse', EntityType::class, [
                 'class' => Warehouse::class,
@@ -59,6 +63,30 @@ class ReceiveType extends AbstractType
                 'choice_attr' => function(Product $product) {
                     return ['data-unit' => $product->getUnit()];
                     },
+            ])
+            ->add('files',FileType::class, [
+                'label' => 'Receipt Files (Optional)',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx', // Acceptable file types
+                ],
+                'constraints' => [
+                    new All (
+                        constraints: [
+                        new File(
+                            maxSize: '2M',
+                            extensions: ['pdf', 'xml'],
+                            extensionsMessage: 'Please upload a valid document (PDF, XML).' 
+                        ),
+                        ],
+                    ),
+                    new Count(
+                        max: 4,
+                        maxMessage: 'You cannot upload more than {{ limit }} files.'
+                    )
+                ]
             ])
         ;
     }

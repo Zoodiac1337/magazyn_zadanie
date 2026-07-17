@@ -56,9 +56,16 @@
 
         {# Files #}
         <div class="form-group">
-            <label for="files">Attach invoices (PDF/XML, max 4 files):</label>
-            <input type="file" id="files" class="form-control-file" multiple accept=".pdf,.xml">
-            <small class="form-help">Hold Ctrl/Cmd to select multiple files.</small>
+            {{ form_label(form.files, 'Attach invoices (PDF/XML, max 4 files):') }}
+            {{ form_widget(form.files, {'attr': {
+                'class': 'form-control-file',
+                'multiple': 'multiple',
+                'accept': '.pdf,.xml'
+            }}) }}
+            {{ form_errors(form.files) }}
+            <small class="form-help" style="display: block; margin-top: 5px; color: #666;">
+                Hold Ctrl/Cmd to select multiple files.
+            </small>
         </div>
 
         <button type="submit" class="btn-submit">Confirm Receipt</button>
