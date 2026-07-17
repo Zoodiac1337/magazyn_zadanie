@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\User;
 use App\Repository\WarehouseOperationRepository;
+use App\Repository\WarehouseRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class WarehouseController extends AbstractController
 {
     #[Route('/', name: 'app_warehouse')]
-    public function index(WarehouseOperationRepository $operationRepo): Response
+    public function index(WarehouseOperationRepository $operationRepo, WarehouseRepository $warehouseRepo): Response
     {
         // Get the logged-in user
         $user = $this->getUser();
@@ -18,8 +19,14 @@ class WarehouseController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Fetch the warehouses assigned to this user
-        $warehouses = $user->getWarehouses();
+        // Check if the user is an Admin
+        if ($this->isGranted('ROLE_ADMIN')) {
+            // Admins see all warehouses
+            $warehouses = $warehouseRepo->findAll();
+        } else {
+            // Normal users only see their assigned warehouses
+            $warehouses = $user->getWarehouses();
+        }
 
         $dashboardData = [];
 

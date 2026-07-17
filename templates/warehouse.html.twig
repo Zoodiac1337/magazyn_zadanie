@@ -5,8 +5,13 @@
 {% block body %}
 <div class="dashboard-container">
     
-    <h2>Your Inventory</h2>
-    <p class="subtitle">Current stock levels across your warehouses.</p>
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Global Warehouse Overview</h2>
+        <p class="subtitle">Real-time stock levels across all company facilities.</p>
+    {% else %}
+        <h2>Your Inventory</h2>
+        <p class="subtitle">Current stock levels across your assigned warehouses.</p>
+    {% endif %}
 
     {% for item in data %}
         <div class="simple-warehouse-card">
@@ -27,7 +32,11 @@
         </div>
     {% else %}
         <div class="simple-warehouse-card">
-            <p class="empty-stock">You are not assigned to any warehouses.</p>
+            {% if is_granted('ROLE_ADMIN') %}
+                <p class="empty-stock">No warehouses exist in the system yet.</p>
+            {% else %}
+                <p class="empty-stock">You are not assigned to any warehouses.</p>
+            {% endif %}
         </div>
     {% endfor %}
 
