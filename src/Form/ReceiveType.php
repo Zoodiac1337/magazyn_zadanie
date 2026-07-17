@@ -70,7 +70,7 @@ class ReceiveType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'attr' => [
-                    'accept' => '.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx', // Acceptable file types
+                    'accept' => '.pdf,.xls', // Acceptable file types
                 ],
                 'constraints' => [
                     new All (
